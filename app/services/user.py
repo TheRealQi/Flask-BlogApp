@@ -9,6 +9,12 @@ class UserService:
     def __init__(self, db):
         self.db = db
 
+    def get_by_email(self, email):
+        return User.query.filter_by(email=email).first()
+
+    def get_by_username(self, username):
+        return User.query.filter_by(username=username).first()
+
     def login(self, username, password):
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
