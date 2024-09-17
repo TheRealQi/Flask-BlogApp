@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_title %} {{ post.title }} {% endblock %}
+
+{% block container %}
+
+    <div class="container mt-4">
+        <h1>{{ post.title }}</h1>
+        <small>@{{ post.author_username }} - {{ post.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+
+        <div class="post-content mt-4" style="word-wrap: break-word; overflow-wrap: break-word;">
+            <p>{{ post.content }}</p>
+        </div>
+
+        <div class="post-buttons mt-4">
+            {% if current_user.is_authenticated %}
+                {% if 'Admin' in current_user.role or post.author_id == current_user.id %}
+                    <a href="{{ url_for('posts.edit', post_id=post.id) }}" class="btn btn-warning btn-sm">Edit</a>
+                    <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST" style="display:inline;">
+                        {{ form.hidden_tag() }}
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
