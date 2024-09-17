@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_injector import inject
 
+from app.decorators import role_required
 from app.forms.users.role import UpdateUserRoleForm  # Import your form class
 from app.services.user import UserService
 
@@ -9,6 +10,7 @@ users = Blueprint("users", __name__)
 # List all users and generate forms dynamically for each user
 @users.route('/', methods=['GET'])
 @inject
+@role_required(['Admin'])
 def list_all(user_service: UserService):
     all_users = user_service.get_all()
     user_forms = {}
@@ -22,6 +24,7 @@ def list_all(user_service: UserService):
 # Update user role
 @users.route('/update', methods=['POST'])
 @inject
+@role_required(['Admin'])
 def update(user_service: UserService):
     form = UpdateUserRoleForm(request.form)
 
