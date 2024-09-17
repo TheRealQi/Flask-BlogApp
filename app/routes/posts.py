@@ -4,7 +4,7 @@ from injector import inject
 
 from app import db
 from app.decorators import role_required
-from app.forms.posts.create_form import CreatePostForm
+from app.forms.posts.create_edit_form import CreateEditPostForm
 from app.forms.posts.delete_form import DeletePostForm
 from app.services.post import PostService
 from app.services.user import UserService
@@ -25,6 +25,7 @@ def list_all(post_service: PostService, user_service: UserService):
 
 
 @posts.route('/myposts', methods=['GET'])
+@login_required
 @inject
 def list_author_posts(post_service: PostService, user_service: UserService):
     delete_post_form = DeletePostForm()
@@ -54,19 +55,24 @@ def view(post_service: PostService, post_id):
 @inject
 @role_required(['Admin', 'Author'])
 def create(post_service: PostService):
-    create_post_form = CreatePostForm()
+    create_post_form = CreateEditPostForm()
     if create_post_form.validate_on_submit():
         post_service.create(create_post_form.title.data, create_post_form.content.data, current_user.id)
         return redirect(url_for('posts.list_author_posts'))
     return render_template('posts/create_post.html', form=create_post_form)
 
 
-@posts.route('/<int:post_id>/edit', methods=['POST', 'GET'])
+@posts.route('/<post_id>/edit', methods=['GET', 'POST'])
 @login_required
 @inject
 @role_required(['Admin', 'Author'])
-def edit(post_id):
-    return "Edit a post"
+def edit(post_service: PostService, post_id):
+    post = post_service.get_by_id(post_id)
+    edit_post_form = CreateEditPostForm(obj=post)
+    if edit_post_form.validate_on_submit():
+        post_service.update(post_id, edit_post_form.title.data, edit_post_form.content.data)
+        return redirect(url_for('posts.view', post_id=post_id))
+    return render_template('posts/edit_post.html', form=edit_post_form, post_id=post_id)
 
 
 @posts.route('/<int:post_id>/delete', methods=['POST'])

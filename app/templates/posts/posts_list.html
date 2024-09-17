@@ -18,7 +18,8 @@
                             {% if current_user.is_authenticated %}
                                 {% if 'Admin' in current_user.role or post.author_id == current_user.id %}
                                     <a href="{{ url_for('posts.edit', post_id=post.id) }}"
-                                       class="btn btn-warning btn-sm">Edit</a>
+                                       class="btn btn-warning btn-sm"
+                                       title="Edit this post">Edit</a>
                                     <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST"
                                           style="display:inline;">
                                         {{ form.hidden_tag() }}

@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_title %} Edit Blog Post {% endblock %}
+
+{% block container %}
+    <div class="container">
+        <h1>Edit Post</h1>
+        <form method="post" action="{{ url_for('posts.edit', post_id=post_id) }}">
+            {{ form.hidden_tag() }}
+            {{ wtf.form_field(form.title) }}
+            {{ wtf.form_field(form.content) }}
+            <button type="submit" class="btn btn-secondary mr-5">Edit Post</button>
+        </form>
+    </div>
+{% endblock %}
