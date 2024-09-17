@@ -19,10 +19,25 @@ class UserService:
     def get_by_id(self, user_id):
         return User.query.get(user_id)
 
+    def get_all(self):
+        return User.query.all()
+
+    def update(self, user_id, role):
+        user = User.query.get(user_id)
+        user.role = role
+        self.db.session.commit()
+        return user
+
+    def delete(self, user_id):
+        user = User.query.get(user_id)
+        self.db.session.delete(user)
+        self.db.session.commit()
+        return user
+
     def login(self, username, password):
         user = User.query.filter_by(username=username).first()
         if user and check_password_hash(user.password, password):
-            login_user(user)
+            login_user(user, remember=True)
             return user
         return None
 
@@ -31,7 +46,7 @@ class UserService:
         user = User(
             username=username,
             email=email,
-            password=hashed_password
+            password=hashed_password,
         )
         self.db.session.add(user)
         self.db.session.commit()

@@ -1,3 +1,11 @@
 .invalid-feedback {
     display: inline !important;
 }
+
+.hidden-label {
+    display: none;
+}
+
+.table .form-control-label {
+    display: none !important;
+}

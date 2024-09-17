@@ -32,20 +32,20 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav d-flex flex-row justify-content-between w-100">
                 <div class="d-flex flex-row">
-                    <a class="nav-item nav-link active"
+                    <a class="nav-item nav-link {% if request.path == url_for('dashboard.home') %}active{% endif %}"
                        href="/">
                         Blogs <span class="sr-only">(current)</span>
                     </a>
                     {% if current_user.is_authenticated %}
                         {% if 'Admin' in current_user.role or 'Author' in current_user.role %}
-                            <a class="nav-item nav-link active"
+                            <a class="nav-item nav-link"
                                href="/">
                                 My Blogs
                             </a>
                         {% endif %}
                         {% if 'Admin' in current_user.role %}
-                            <a class="nav-item nav-link active}"
-                               href="">
+                            <a class="nav-item nav-link {% if request.path == url_for('users.list_all') %}active{% endif %}"
+                               href="{{ url_for('users.list_all') }}">
                                 Users
                             </a>
                         {% endif %}

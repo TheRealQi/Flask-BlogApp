@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_title %} Users List {% endblock %}
+
+{% block additional_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='users_list.css') }}">
+{% endblock %}
+
+{% block container %}
+    <div class="container mt-4">
+        <h1 class="mb-4">Users List</h1>
+
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Update Role</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.role }}</td>
+                    <td>
+                        <form method="POST" action="{{ url_for('users.update') }}">
+                            <div class="form-group table">
+                                {{ wtf.form_field(form[user.id].user_id, class="form-control") }}
+                                {{ wtf.form_field(form[user.id].role, class="form-control") }}
+                                {{ wtf.form_field(form[user.id].submit, class="btn btn-primary ml-2") }}
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
