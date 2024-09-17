@@ -1,5 +1,7 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_injector import inject
+from flask_login import login_required
+
 from app.models.user import User
 from app.services.user import UserService
 from app.forms.auth.login import LoginForm
@@ -37,6 +39,8 @@ def signup(user_service: UserService):
 
 
 @auth.route('/logout')
+@login_required
+@inject
 def logout(user_service: UserService):
     user_service.logout()
     return redirect(url_for('auth.login'))
