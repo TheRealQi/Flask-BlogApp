@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, get_flashed_messages
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from config import Config
@@ -18,6 +18,13 @@ def create_app():
 
     login_manager.init_app(app)
     login_manager.login_view = 'auth.login'
+
+    @app.context_processor
+    def template_global_variables():
+        return {
+            'url_for': url_for,
+            'get_flashed_messages': get_flashed_messages
+        }
 
     from app.routes.dashboard import dashboard as dashboard_blueprint
     app.register_blueprint(dashboard_blueprint)

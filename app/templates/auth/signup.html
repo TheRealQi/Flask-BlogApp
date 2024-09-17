@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_title %} Signup {% endblock %}
+
+{% block container %}
+    {% for message in get_flashed_messages() %}
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    {% endfor %}
+
+    <form action="{{ url_for('auth.signup') }}" method="POST" class="form" role="form" novalidate>
+        {{ form.hidden_tag() }}
+
+        {{ wtf.form_field(form.username) }}
+        {{ wtf.form_field(form.email) }}
+        {{ wtf.form_field(form.password) }}
+
+        <button type="submit" class="btn btn-secondary mr-5">Signup</button>
+        <a href="{{ url_for('auth.login') }}">Already have an account? Login</a>
+    </form>
+{% endblock %}

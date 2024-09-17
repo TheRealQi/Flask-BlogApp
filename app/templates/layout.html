@@ -24,7 +24,7 @@
 
 {% block navbar %}
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand mr-5" href="#">Blog App</a>
+        <a class="navbar-brand mr-5" href="/">Blog App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -33,13 +33,13 @@
             <div class="navbar-nav d-flex flex-row justify-content-between w-100">
                 <div class="d-flex flex-row">
                     <a class="nav-item nav-link active"
-                       href="">
+                       href="/">
                         Blogs <span class="sr-only">(current)</span>
                     </a>
                     {% if current_user.is_authenticated %}
                         {% if 'Admin' in current_user.role or 'Author' in current_user.role %}
                             <a class="nav-item nav-link active"
-                               href="">
+                               href="/">
                                 My Blogs
                             </a>
                         {% endif %}

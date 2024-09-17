@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_injector import inject
 from flask_login import login_required
-
 from app.models.user import User
 from app.services.user import UserService
 from app.forms.auth.login import LoginForm
@@ -13,14 +12,13 @@ auth = Blueprint("auth", __name__)
 @auth.route('/login', methods=['GET', 'POST'])
 @inject
 def login(user_service: UserService):
-    error_message = ""
     login_form = LoginForm()
     if login_form.validate_on_submit():
         if user_service.login(login_form.username.data, login_form.password.data):
-            return "Logged in"
-        error_message = "Invalid username or password"
-    return "login"
-    # return render_template('auth/login.html', form=login_form, error_message=error_message)
+            return redirect(url_for('/'))
+        else:
+            flash("Invalid username or password", "danger")
+    return render_template('auth/login.html', form=login_form)
 
 
 @auth.route('/signup', methods=['GET', 'POST'])
@@ -34,7 +32,10 @@ def signup(user_service: UserService):
                 signup_form.email.data,
                 signup_form.password.data
             )
-        return redirect(url_for('auth.login'))
+            return redirect(url_for('auth.login'))
+        else:
+            flash("Username or email already exists", "danger")
+    print(signup_form.errors)
     return render_template('auth/signup.html', form=signup_form)
 
 
