@@ -4,10 +4,6 @@
 
 {% block page_title %} Users List {% endblock %}
 
-{% block additional_css %}
-    <link rel="stylesheet" href="{{ url_for('static', filename='users_list.css') }}">
-{% endblock %}
-
 {% block container %}
     <div class="container mt-4">
         <h1 class="mb-4">Users List</h1>
@@ -31,6 +27,7 @@
                     <td>{{ user.role }}</td>
                     <td>
                         <form method="POST" action="{{ url_for('users.update') }}">
+                            {{ form[user.id].hidden_tag() }}
                             <div class="form-group table">
                                 {{ wtf.form_field(form[user.id].user_id, class="form-control") }}
                                 {{ wtf.form_field(form[user.id].role, class="form-control") }}

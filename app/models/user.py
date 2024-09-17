@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-
 from app import db
 
 
@@ -15,3 +14,4 @@ class User(db.Model, UserMixin):
         db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp()
     )
+

@@ -40,4 +40,8 @@ def create_app():
     from app.routes.users import users as users_blueprint
     app.register_blueprint(users_blueprint, url_prefix="/users")
 
+    from app.routes.posts import posts as posts_blueprint
+    app.register_blueprint(posts_blueprint, url_prefix="/posts")
+
+
     return app

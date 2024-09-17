@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_injector import inject
 from flask_login import login_required
-from app.models.user import User
 from app.services.user import UserService
 from app.forms.auth.login import LoginForm
 from app.forms.auth.signup import SignupForm
@@ -50,6 +49,7 @@ def signup(user_service: UserService):
 
 @auth.route('/logout')
 @login_required
+
 def logout():
     user_service = UserService(db)
     user_service.logout()

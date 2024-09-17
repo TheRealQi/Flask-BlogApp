@@ -24,7 +24,7 @@
 
 {% block navbar %}
     <header class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand mr-5" href="/">Blog App</a>
+        <a class="navbar-brand mr-5" href="{{ url_for('dashboard.home')}}">Blog App</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
                 aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -32,15 +32,15 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav d-flex flex-row justify-content-between w-100">
                 <div class="d-flex flex-row">
-                    <a class="nav-item nav-link {% if request.path == url_for('dashboard.home') %}active{% endif %}"
-                       href="/">
-                        Blogs <span class="sr-only">(current)</span>
+                    <a class="nav-item nav-link {% if request.path == url_for('posts.list_all') %}active{% endif %}"
+                       href="{{ url_for('posts.list_all')}}">
+                        Posts <span class="sr-only"></span>
                     </a>
                     {% if current_user.is_authenticated %}
                         {% if 'Admin' in current_user.role or 'Author' in current_user.role %}
                             <a class="nav-item nav-link"
-                               href="/">
-                                My Blogs
+                               href="{{ url_for('posts.list_author_posts') }}">
+                                My Posts
                             </a>
                         {% endif %}
                         {% if 'Admin' in current_user.role %}
@@ -62,6 +62,11 @@
                             Signup
                         </a>
                     {% else %}
+                        {% if 'Admin' in current_user.role or 'Author' in current_user.role %}
+                            <a class="btn btn-primary ml-3 mt-auto mb-auto" href="{{ url_for("posts.create") }}">
+                                Create Post
+                            </a>
+                        {% endif %}
                         <a class="btn btn-danger ml-3 mt-auto mb-auto" href="{{ url_for("auth.logout") }}">
                             Logout
                         </a>
