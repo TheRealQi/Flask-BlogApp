@@ -9,7 +9,10 @@
     <div class="container mt-4">
         <h1>{{ post.title }}</h1>
         <small>@{{ post.author_username }} - {{ post.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
-
+        <div class="mt-2">
+            <span class="badge badge-primary">Likes: {{ post.likes }}</span>
+            <span class="badge badge-secondary">Dislikes: {{ post.dislikes }}</span>
+        </div>
         <div class="post-content mt-4" style="word-wrap: break-word; overflow-wrap: break-word;">
             <p>{{ post.content }}</p>
         </div>
@@ -18,12 +21,40 @@
             {% if current_user.is_authenticated %}
                 {% if 'Admin' in current_user.role or post.author_id == current_user.id %}
                     <a href="{{ url_for('posts.edit', post_id=post.id) }}" class="btn btn-warning btn-sm">Edit</a>
-                    <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST" style="display:inline;">
+                    <form action="{{ url_for('posts.delete', post_id=post.id) }}" method="POST"
+                          style="display:inline;">
                         {{ form.hidden_tag() }}
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger btn-sm">Delete</button>
                     </form>
                 {% endif %}
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            {% if post.liked %}
+                <form action="{{ url_for('posts.like', post_id=post.id) }}" method="POST"
+                      style="margin-right: 10px;">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-primary btn-sm">Liked</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('posts.like', post_id=post.id) }}" method="POST"
+                      style="margin-right: 10px;">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-primary btn-sm">Like</button>
+                </form>
+            {% endif %}
+
+            {% if post.disliked %}
+                <form action="{{ url_for('posts.dislike', post_id=post.id) }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-secondary btn-sm">Disliked</button>
+                </form>
+            {% else %}
+                <form action="{{ url_for('posts.dislike', post_id=post.id) }}" method="POST">
+                    {{ form.hidden_tag() }}
+                    <button type="submit" class="btn btn-secondary btn-sm">Dislike</button>
+                </form>
             {% endif %}
         </div>
     </div>

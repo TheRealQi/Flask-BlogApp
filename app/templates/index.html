@@ -8,6 +8,9 @@
 <div class="container mt-4">
     <div class="jumbotron text-center">
         <h1 class="display-4">Welcome to Our Blog Application!</h1>
+        {% if not current_user.is_authenticated %}
+        <p class="lead">Login/Signup to start blogging!</p>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

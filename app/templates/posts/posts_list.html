@@ -6,13 +6,17 @@
 
 {% block container %}
     <div class="container mt-4">
-        <h1>{{ Posts }}</h1>
+        <h1> All Posts </h1>
         {% if posts %}
             <div class="list-group">
                 {% for post in posts %}
                     <div class="list-group-item mb-3 post-box">
                         <h5 class="mb-1">{{ post.title }}</h5>
                         <small>@{{ post.author_username }} - {{ post.date_created.strftime('%Y-%m-%d %H:%M') }}</small>
+                        <div class="mt-2">
+                            <span class="badge badge-primary">Likes: {{ post.likes }}</span>
+                            <span class="badge badge-secondary">Dislikes: {{ post.dislikes }}</span>
+                        </div>
                         <div class="post-buttons mt-2">
                             <a href="{{ url_for('posts.view', post_id=post.id) }}" class="btn btn-info btn-sm">View</a>
                             {% if current_user.is_authenticated %}

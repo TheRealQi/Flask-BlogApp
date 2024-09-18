@@ -4,7 +4,6 @@ from flask_login import login_required
 from app.services.user import UserService
 from app.forms.auth.login import LoginForm
 from app.forms.auth.signup import SignupForm
-from app import db
 
 auth = Blueprint("auth", __name__)
 
@@ -49,8 +48,7 @@ def signup(user_service: UserService):
 
 @auth.route('/logout')
 @login_required
-
-def logout():
-    user_service = UserService(db)
+@inject
+def logout(user_service: UserService):
     user_service.logout()
     return redirect(url_for('auth.login'))

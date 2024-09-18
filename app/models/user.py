@@ -1,17 +1,16 @@
 from flask_login import UserMixin
-from app import db
+from app import sql
 
 
-class User(db.Model, UserMixin):
+class User(sql.Model, UserMixin):
     __tablename__ = 'user'
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(120), nullable=False)
-    role = db.Column(db.String(6), nullable=False, default='Reader')
-    date_created = db.Column(db.DateTime, default=db.func.current_timestamp())
-    date_modified = db.Column(
-        db.DateTime, default=db.func.current_timestamp(),
-        onupdate=db.func.current_timestamp()
+    id = sql.Column(sql.Integer, primary_key=True)
+    username = sql.Column(sql.String(120), unique=True, nullable=False)
+    email = sql.Column(sql.String(120), unique=True, nullable=False)
+    password = sql.Column(sql.String(120), nullable=False)
+    role = sql.Column(sql.String(6), nullable=False, default='Reader')
+    date_created = sql.Column(sql.DateTime, default=sql.func.current_timestamp())
+    date_modified = sql.Column(
+        sql.DateTime, default=sql.func.current_timestamp(),
+        onupdate=sql.func.current_timestamp()
     )
-

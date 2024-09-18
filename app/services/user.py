@@ -1,14 +1,14 @@
 from flask_sqlalchemy import SQLAlchemy
 from app.models.user import User
-from flask_login import login_user, logout_user
+from flask_login import login_user, logout_user, current_user
 from flask_injector import inject
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
 class UserService:
     @inject
-    def __init__(self, db: SQLAlchemy):
-        self.db = db
+    def __init__(self, sql: SQLAlchemy):
+        self.sql = sql
 
     def get_by_email(self, email):
         return User.query.filter_by(email=email).first()
@@ -25,13 +25,13 @@ class UserService:
     def update(self, user_id, role):
         user = User.query.get(user_id)
         user.role = role
-        self.db.session.commit()
+        self.sql.session.commit()
         return user
 
     def delete(self, user_id):
         user = User.query.get(user_id)
-        self.db.session.delete(user)
-        self.db.session.commit()
+        self.sql.session.delete(user)
+        self.sql.session.commit()
         return user
 
     def login(self, username, password):
@@ -48,8 +48,8 @@ class UserService:
             email=email,
             password=hashed_password,
         )
-        self.db.session.add(user)
-        self.db.session.commit()
+        self.sql.session.add(user)
+        self.sql.session.commit()
         return user
 
     def logout(self):

@@ -4,7 +4,7 @@ from flask_login import LoginManager
 from config import Config
 from flask_bootstrap import Bootstrap
 
-db = SQLAlchemy()
+sql = SQLAlchemy()
 login_manager = LoginManager()
 
 
@@ -13,7 +13,10 @@ def create_app():
 
     app.config.from_object(Config)
 
-    db.init_app(app)
+    sql.init_app(app)
+    with app.app_context():
+        sql.create_all()
+
     Bootstrap(app)
 
     login_manager.init_app(app)
@@ -43,5 +46,7 @@ def create_app():
     from app.routes.posts import posts as posts_blueprint
     app.register_blueprint(posts_blueprint, url_prefix="/posts")
 
+    from app.routes.errors import errors as errors_blueprint
+    app.register_blueprint(errors_blueprint, url_prefix="/errors")
 
     return app
